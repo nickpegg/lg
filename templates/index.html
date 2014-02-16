@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Nick's Looking Glass</h1>
+    </div>
+
+    <div class="row">
+        <form class="col-md-6" method="POST" action="." role="form">
+            <div class=" form-group">
+
+                <label for="target">Target</label>
+                <input id="target" class="form-control" type="text" name="target" />
+
+            </div>
+            <div class=" form-group">
+
+                <label class="radio-inline">
+                    <input type="radio" name="method" value="mtr" checked>
+                    MTR
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="method" value="ping">
+                    ping
+                </label>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-default" onclick="$('#spinner').show();">Go!</button> &nbsp;
+                <img id="spinner" style="display:none;" src="{{ url_for('static', filename='spinner.gif') }}" />
+            </div>
+        </form>
+    </div>
+
+    {% if results %}
+        <h3>Results</h3>
+        <pre>{{ results }}</pre>
+    {% endif %}
+
+    <p class="text-center">
+        <small>
+            Written by <a href="https://github.com/nickpegg">Nick Pegg</a>
+        </small>
+    </p>
+</div>
+
+{% endblock %}
