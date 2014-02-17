@@ -45,7 +45,7 @@ def ping(dest, count=10):
 
 
 def mtr(dest, count=10):
-    return sh.mtr(dest, e=True, r=True, w=True, c=count, _ok_code=[0, 1])
+    return sh.mtr(dest, r=True, w=True, c=count, _ok_code=[0, 1])
 
 
 def log(request, method, target):
