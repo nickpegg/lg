@@ -17,16 +17,36 @@ def index():
 
 @app.route('/go', methods=['POST'])
 def go():
-    result = None
+    log(request)
+    output = do(request.form.get('method'), request.form.get('target'))
+
+    return render_template('index.html', results=output)
+
+
+@app.route('/api')
+def api():
+    return render_template('api.html')
+
+
+@app.route('/api/ping/<target>')
+def api_ping(target):
+    print(target)
+    log(request, method='ping', target=target)
+    return do('ping', target)
+
+
+@app.route('/api/mtr/<target>')
+def api_mtr(target):
+    log(request, method='mtr', target=target)
+    return do('mtr', request.form.get('target'))
+
+
+def do(method, target):
     output = ''
+    result = None
 
-    match = re.match("([\w\.\:\-\_]+)", request.form['target'])
-    if match:
-        target = match.group(1)
-        method = request.form['method']
-
-        log(request, method, target)
-
+    target = sanitize(target)
+    if target:
         if method == 'ping':
             result = ping(target)
         elif method == 'mtr':
@@ -36,10 +56,11 @@ def go():
 
         if result is not None:
             output = result.stderr + result.stdout
+            output = result.stderr + result.stdout
     else:
         output = "Your target doesn't look like an IP address or a hostname."
 
-    return render_template('index.html', results=output)
+    return output
 
 
 def ping(dest, count=10):
@@ -50,9 +71,27 @@ def mtr(dest, count=10):
     return sh.mtr(dest, r=True, w=True, c=count, _ok_code=[0, 1])
 
 
-def log(request, method, target):
-    print("[{0}] {1} {2} {3}".format(str(datetime.datetime.now()),
-                                     request.remote_addr, method, target))
+def sanitize(dirty_target):
+    match = re.match("([\w\.\:\-\_]+)", dirty_target)
+    if match:
+        target = match.group(1)
+    else:
+        target = ''
+
+    return target
+
+
+def log(request, method=None, target=None):
+    if not method:
+        method = request.form.get('method')
+
+    if not target:
+        target = request.form.get('target')
+
+    print("[{0}] {1} - {2} - {3}".format(str(datetime.datetime.now()),
+                                         request.remote_addr,
+                                         method,
+                                         target))
 
 
 if __name__ == '__main__':
