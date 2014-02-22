@@ -1,4 +1,4 @@
-FROM 	nickpegg/python:2.7
+FROM 	nickpegg/uwsgi
 
 RUN	apt-get update
 RUN	apt-get install -y mtr-tiny iputils-ping
