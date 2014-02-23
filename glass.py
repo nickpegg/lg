@@ -38,7 +38,7 @@ def api_ping(target):
 @app.route('/api/mtr/<target>')
 def api_mtr(target):
     log(request, method='mtr', target=target)
-    return do('mtr', request.form.get('target'))
+    return do('mtr', target=target)
 
 
 def do(method, target):
