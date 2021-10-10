@@ -3,10 +3,10 @@
 {% block content %}
     <div class="container">
         <div class="page-header">
-            <h1>Looking Glass - API</h1>
+            <h1><a href="..">Looking Glass</a> - API</h1>
         </div>
 
-        <h3>/api/[method]/[target]</h3>
+        <h3>/&lt;method&gt;/&lt;target&gt;</h3>
         <ul>
             <li><em>method</em> - 'ping' or 'mtr'
             <li><em>target</em> - Hostname or IP to ping</li>
@@ -14,7 +14,7 @@
 
         <h3>Examples</h3>
         <pre>
-$ curl http://lg.nickpegg.com/api/ping/google.com
+$ curl https://lg.nickpegg.com/ping/google.com
 PING google.com (173.194.43.41) 56(84) bytes of data.
 64 bytes from lga15s35-in-f9.1e100.net (173.194.43.41): icmp_req=1 ttl=55 time=1.92 ms
 64 bytes from lga15s35-in-f9.1e100.net (173.194.43.41): icmp_req=2 ttl=55 time=1.82 ms
@@ -32,7 +32,7 @@ PING google.com (173.194.43.41) 56(84) bytes of data.
 rtt min/avg/max/mdev = 1.820/1.889/1.982/0.065 ms</pre>
 
         <pre>
-$ curl http://lg.nickpegg.com/api/mtr/google.com
+$ curl https://lg.nickpegg.com/mtr/google.com
 HOST: 44885de76d20                   Loss%   Snt   Last   Avg  Best  Wrst StDev
   1.|-- 172.17.42.1                     0.0%    10    0.0   0.1   0.0   0.1   0.0
   2.|-- router1-nac.linode.com          0.0%    10    0.5   0.5   0.4   0.5   0.0

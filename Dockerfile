@@ -1,13 +1,28 @@
-FROM 	nickpegg/uwsgi
+FROM python:3.9-slim
+
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
+
+ENV HTTP_PORT 8000
+ENV NUM_WORKERS 4
+
+ENV FLASK_APP glass.py
+
+EXPOSE ${HTTP_PORT}
+
+WORKDIR /app
 
 RUN	apt-get update
 RUN	apt-get install -y mtr-tiny iputils-ping
 
-RUN	git clone https://github.com/nickpegg/lg.git /srv/lg
-RUN 	pip install -r /srv/lg/requirements.txt
+RUN pip install --no-cache-dir poetry
+COPY pyproject.toml poetry.lock ./
+RUN poetry config virtualenvs.create false
+RUN poetry install --no-dev
 
-RUN	/srv/lg/extra/adduser.sh
+COPY . .
 
-WORKDIR	/srv/lg
-CMD	uwsgi -p 16 -s 0.0.0.0:5000 --uid lg -w glass:app
-EXPOSE	5000
+RUN	/app/extra/adduser.sh
+
+USER lg
+CMD gunicorn -w ${NUM_WORKERS} -b 0.0.0.0:${HTTP_PORT} --capture-output --access-logfile - --log-file - glass:app
