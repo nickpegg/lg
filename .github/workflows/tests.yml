@@ -10,7 +10,7 @@ on:
 
 jobs:
   mypy:
-    runs-on: ubuntu-lateest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
