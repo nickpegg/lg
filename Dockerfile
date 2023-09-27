@@ -13,7 +13,7 @@ EXPOSE ${HTTP_PORT}
 WORKDIR /app
 
 RUN	apt-get update
-RUN	apt-get install -y mtr-tiny iputils-ping
+RUN	apt-get install -y mtr-tiny iputils-ping curl
 
 RUN pip install --no-cache-dir poetry
 COPY pyproject.toml poetry.lock ./
