@@ -45,16 +45,29 @@ def api_mtr(target: str) -> str:
     return do("mtr", target=target)
 
 
+@app.route("/curl/<target>")
+@app.route("/api/curl/<target>")
+def api_curl(target: str) -> str:
+    log(request, method="curl", target=target)
+    return do("curl", target)
+
+
+
 def do(method: str, target: str) -> str:
     output = ""
     result = None
-
-    target = sanitize(target)
+    if method == "curl":
+        target = sanitize2(target)
+    else:
+        target = sanitize(target)
+        print(target)
     if target:
         if method == "ping":
             result = ping(target)
         elif method == "mtr":
             result = mtr(target)
+        elif method == "curl":
+            result = curl(target)
         else:
             output = "You gave me an invalid method!"
 
@@ -78,6 +91,10 @@ def mtr(dest: str, count: int = 10) -> CompletedProcess[bytes]:
         ["mtr", dest, "-r", "-w", "-c", str(count)], capture_output=True
     )
 
+def curl(dest: str, count: int = 10) -> CompletedProcess[bytes]:
+    return subprocess.run(
+        ["curl", "-v", dest ], capture_output=True
+    )
 
 def sanitize(dirty_target: str) -> str:
     match = re.match("([\w\.\:\-\_]+)", dirty_target)
@@ -88,6 +105,14 @@ def sanitize(dirty_target: str) -> str:
 
     return target
 
+def sanitize2(dirty_target: str) -> str:
+    match = re.match("(http|https)://[\w\-]+(\.[\w\-]+)+\S*", dirty_target)
+    if match:
+        target = match.group(0)
+    else:
+        target = ""
+
+    return target
 
 def log(
     request: Request, method: Optional[str] = None, target: Optional[str] = None
