@@ -12,7 +12,7 @@ Flask = "^2.0.1"
 gunicorn = "^20.1.0"
 
 [tool.poetry.dev-dependencies]
-black = "^21.9b0"
+black = "^24.3"
 mypy = "^0.910"
 
 [build-system]
