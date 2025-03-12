@@ -1,10 +1,10 @@
 all: fmt test
 
 fmt:
-	poetry run black glass.py
+	poetry run black lg.py
 
 test:
-	poetry run mypy glass.py
+	poetry run mypy lg.py
 
 # Build the docker image
 build:
