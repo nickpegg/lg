@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM python:3.14-slim
 
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -15,7 +15,7 @@ WORKDIR /app
 RUN	apt-get update
 RUN	apt-get install -y mtr-tiny iputils-ping
 
-RUN pip install --no-cache-dir poetry
+RUN pip install --upgrade --no-cache-dir pip poetry
 COPY pyproject.toml poetry.lock ./
 RUN poetry config virtualenvs.create false
 RUN poetry install --without=dev --no-root
