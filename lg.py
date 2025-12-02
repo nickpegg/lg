@@ -69,18 +69,18 @@ def do(method: str, target: str) -> str:
     return output
 
 
-def ping(dest: str, count: int = 10) -> CompletedProcess[bytes]:
+def ping(dest: str, count: int = 5) -> CompletedProcess[bytes]:
     return subprocess.run(["ping", dest, "-c", str(count)], capture_output=True)
 
 
-def mtr(dest: str, count: int = 10) -> CompletedProcess[bytes]:
+def mtr(dest: str, count: int = 5) -> CompletedProcess[bytes]:
     return subprocess.run(
         ["mtr", dest, "-r", "-w", "-c", str(count)], capture_output=True
     )
 
 
 def sanitize(dirty_target: str) -> str:
-    match = re.match("([\w\.\:\-\_]+)", dirty_target)
+    match = re.match(r"([\w\.\:\-\_]+)", dirty_target)
     if match:
         target = match.group(1)
     else:
